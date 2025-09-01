@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Northwind_2_14_Question.Models;
 using System;
 using System.Collections;
@@ -316,8 +316,45 @@ namespace Northwind_2_14_Question.Services
             Console.ReadKey();
         }
 
+        public static void case11_FrequentlyOrder(NorthwndContext context)
+        {
+
+        }
+
+        public static void case12_discountForGermeny(NorthwndContext context)
+        {
+            using(var transaction  = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //context.OrderDetails.Where(x => x.Order.Customer.Country == "Germany" && x.Order.OrderDate.Value.Year == 1997)
+                    //.ExecuteUpdate(s => s.SetProperty(x => x.UnitPrice, x => x.UnitPrice * 0.9m));
+
+                    var customer = context.OrderDetails.Where(x => x.Order.Customer.Country == "Germany" && x.Order.OrderDate.Value.Year == 1997);
+
+                    foreach (var c in customer)
+                    {
+                        c.Discount = 0.1f;
+                    }
+
+                    context.SaveChanges();
 
 
+                    transaction.Commit();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Successfully Updated!");
+                    Console.ResetColor();
+
+                }
+                catch(Exception ex) 
+                {
+                    transaction.Rollback();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Ohhh no! Something Went Wrong Please Try Again!!");
+                    Console.ResetColor();
+                }
+            }
+        }
     }
 }
 
