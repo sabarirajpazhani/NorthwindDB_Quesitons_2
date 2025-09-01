@@ -194,6 +194,17 @@ namespace Northwind_2_14_Question
                             Service_Methodscs.case12_discountForGermeny(context);   
 
                             break;
+
+                        case 13:
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("13.\tDelete all orders that were never shipped (ShippedDate IS NULL). (Handle cascading deletes safely).");
+                            Console.ResetColor();
+                            Console.WriteLine();
+
+                            Service_Methodscs.case13_DeleteAllOrder(context);
+
+                            break;
                     }
 
                 }
