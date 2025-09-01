@@ -355,6 +355,40 @@ namespace Northwind_2_14_Question.Services
                 }
             }
         }
+
+        public static void case13_DeleteAllOrder(NorthwndContext context)
+        {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var deleteNull = context.Orders.Where(x => x.ShippedDate == null).Select(x=>x.OrderId).ToList();
+
+                    foreach(var i in deleteNull)
+                    {
+                        context.OrderDetails.Where(x => x.OrderId == i).ExecuteDelete();
+                    }
+
+                    context.Orders.Where(x => x.ShippedDate == null).ExecuteDelete();
+
+                    transaction.Commit();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Successfully Updated!");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Ohhh no! Something Went Wrong Please Try Again!!"+ex.Message);
+                    Console.ResetColor();
+                }
+            }
+        }
+
+
+
     }
 }
 
